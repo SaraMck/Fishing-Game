@@ -1,0 +1,73 @@
+import random as ran
+inventory = []      # Creates list to contain the objects in inventory
+inventory_size = 5  # Will be used to set the max size of list
+
+
+class Loot:     # Creates a class for the  objects that can be fished
+    def __init__(self, loot_name, loot_price, loot_chance):
+        self.loot_name = loot_name
+        self.loot_price = loot_price
+        self.loot_chance = loot_chance
+
+
+# FUNCTIONS
+def sort_list_by_chance(list1):  # Creates function to sort lists by loot chance
+    list1.sort(key=lambda x: x.loot_chance)
+
+
+def check_length():  # Function to check if the inventory is full or not
+    if len(inventory) >= inventory_size:
+        print("Inventory full. Dropping the fish.")
+    else:
+        inventory.append(catch_list[0])  # Adds the first element (the rarest fish) to your inventory
+
+
+def fish(fish_object, chance, ):  # Creates the fishing mechanic
+
+    if chance < fish_object.loot_chance:
+        catch_list.append(fish_object)
+
+
+# Creates the individual objects that can be fished
+carp = Loot("Carp", 45, 0.15)
+tuna = Loot("Tuna", 40, 0.2)
+trout = Loot("Trout", 50, 0.1)
+old_boot = Loot("Old Boot", 2, 0.6)
+shark = Loot("Shark", 200, 0.05)
+loot_list = [tuna, carp, trout, old_boot, shark]    # Adds the objects to a list
+sort_list_by_chance(loot_list)  # Sorts loot list by rarity
+for element in loot_list:
+    print(element.loot_name)
+
+
+# MAIN CODE
+while True:
+    command = input(">").lower()
+    if command == "f":
+        catch_list = []    # Creates an empty list for the potential caught fish
+        percentage_chance = ran.random()    # Gets a random float number between 0 and 1
+        print(percentage_chance)
+        for element in loot_list:   # Loops through each of the fish objects in loot list
+            fish(element, percentage_chance)    # Calls the fish function
+        sort_list_by_chance(catch_list)    # Sorts the caught list so that the rarest fish will be first
+        if catch_list:     # If the catch list is True (which means its not empty) , this will happen
+            print(f"Wow! {catch_list[0].loot_name} caught!")   # Prints a message which says the name of caught fish
+            check_length()  # Calls the check length function to see if inventory is full or not
+        else:
+            print("Nothing caught this time!")  # If nothing was caught, prints message to tell user
+    elif command == "i":
+        print("Inventory: ")
+        for element in inventory:
+            print(element.loot_name)    # Displays the name of each object in the inventory
+    elif command == "q":
+        break   # Exits the while statement if q is typed, exiting the game
+    elif command == "e":
+        print("Inventory emptied!")
+        inventory.clear()   # Empties all elements from the inventory list
+    elif command == "help" or "h":
+        print("""f - fish
+i - inventory
+q- quit
+e - empty inventory""")     # Displays the list of controls to the user
+    else:
+        print("Invalid Command.")   # If any other keys are input, tells the user it is invalid
